@@ -4,7 +4,7 @@ const assert = require('assert');
 const {Builder, By, Key, promise, until} = require('selenium-webdriver');
 
 promise.USE_PROMISE_MANAGER = false;
-var homePage = require('../homepage');
+var homePage = require('../pageobjects/homepage');
 
 describe('BBC iplayer', function () {
 

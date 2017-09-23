@@ -1,0 +1,12 @@
+npm install --save-dev selenium-webdriver
+npm install --save-dev chai
+npm install --save-dev mocha
+npm install -g phantomjs
+
+
+browser=headless mocha -t 0
+browser=chrome mocha -t 0
+browser=firefox mocha -t 0
+
+document.documentElement.clientHeight
+document.querySelector('a.button:nth-child(1)').getBoundingClientRect().y
