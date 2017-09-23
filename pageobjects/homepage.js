@@ -13,8 +13,14 @@ const PETER_RABBIT = By.linkText("Peter Rabbit");
 const SEARCH_BOX = By.css('#orb-search-q');
 const Cbbebies_logo = By.css('.children-logo');
 
-class HomePage extends BasePage {
+var webdriverio = require('webdriverio');
+var options = {
+    desiredCapabilities: {
+        browserName: 'firefox'
+    }
+};
 
+class HomePage extends BasePage {
     async navigateToGet() {
         await driver.get("https://www.bbc.co.uk/iplayer");
     }

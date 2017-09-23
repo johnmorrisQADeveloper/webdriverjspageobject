@@ -84,10 +84,24 @@ class BasePage {
     // later at somepoint , de couple the methods i.e. get location, delete file, screenshot , and check if the files are different
     async captureScreenshot(screenShotFileName, screenShotFileLocation, elementScreenShotFileName, elementScreenShotFileLocation, webElement) {
         try {
-            console.log("Element screenshot "+webElement);
+            console.log("Element screenshot " + webElement);
             // gets the element location
             var x, y, h, w;
 
+
+            // works ..
+            // var element = await driver.executeScript("return document.querySelector('#tvip-nav > div > div.tvip-masthead-container > div > div > span').getBoundingClientRect()").then(function (value) {
+            //     console.log("value of top " + value.top);
+            //     console.log("value of bottom  " + value.bottom);
+            //     console.log("value of height " + value.height);
+            //     console.log("value of width " + value.width);
+            //     console.log("value of right " + value.right);
+            //     console.log("value of left " + value.left);
+            //
+            //     x = value.left;
+            //     y = value.top;
+            //
+            // });
             var elementLocation = await driver.findElement(webElement)
             await elementLocation.getLocation().then(function (location) {
                 x = location.x;
@@ -95,7 +109,6 @@ class BasePage {
             });
 
             var elementSize = await driver.findElement(webElement);
-
             await elementSize.getSize().then(function (size) {
                 h = size.height;
                 w = size.width;
@@ -119,25 +132,25 @@ class BasePage {
                 }
             );
 
-            // extract the web element from the screenshot based on the x,y,h,w
+            //extract the web element from the screenshot based on the x,y,h,w
             var Jimp = require("jimp");
             var location = screenShotFileLocation + '/' + screenShotFileName;
             Jimp.read("shot/john.png" /*location*/, function (err, image) {
                 if (err) throw err;
                 image.crop(x, y, w, h)
                     .write(elementScreenShotFileLocation + '/' + elementScreenShotFileName, () => {
-                        removeImage('./' + screenShotFileLocation + '/' + screenShotFileName);
+                        //removeImage('./' + screenShotFileLocation + '/' + screenShotFileName);
                     });
             });
 
-            // compares a two images and spots the difference into a third file
-            var resemble = require('resemblejs');
-            var diff = resemble(elementScreenShotFileLocation+'/'+elementScreenShotFileName).compareTo('shot/baseline.png').scaleToSameSize().onComplete(function (data) {
-                console.log(data);
-                if (data.rawMisMatchPercentage > 0) {
-                    fs.writeFileSync('./shot/diff.png', data.getBuffer());
-                }
-            });
+            // // compares a two images and spots the difference into a third file
+            // var resemble = require('resemblejs');
+            // var diff = resemble(elementScreenShotFileLocation + '/' + elementScreenShotFileName).compareTo('shot/baseline.png').scaleToSameSize().onComplete(function (data) {
+            //     //console.log(data);
+            //     if (data.rawMisMatchPercentage > 0) {
+            //         fs.writeFileSync('./shot/diff.png', data.getBuffer());
+            //     }
+            // });
 
         } catch (err) {
             throw  new Error('Unable to screenshot ' + err.message);
