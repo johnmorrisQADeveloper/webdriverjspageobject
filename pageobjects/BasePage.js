@@ -132,9 +132,10 @@ class BasePage {
 
             // compares a two images and spots the difference into a third file
             var resemble = require('resemblejs');
-            var diff = resemble('/'+elementScreenShotFileLocation+'/'+elementScreenShotFileName).compareTo('/shot/baseline.png').scaleToSameSize().onComplete(function (data) {
+            var diff = resemble(elementScreenShotFileLocation+'/'+elementScreenShotFileName).compareTo('shot/baseline.png').scaleToSameSize().onComplete(function (data) {
+                console.log(data);
                 if (data.rawMisMatchPercentage > 0) {
-                    fs.writeFileSync('diff.png', data.getBuffer());
+                    fs.writeFileSync('./shot/diff.png', data.getBuffer());
                 }
             });
 

@@ -23,7 +23,7 @@ class HomePage extends BasePage {
         await  this.click(CHANNELS_BUTTON, 2);
         //await this.captureScreenshot('john.png', 'shot', 'new1.png', 'shot', CBEEBIES_IPLAYER);
         await this.click(CBEEBIES, 2);
-        await this.captureScreenshot('john.png', 'shot', 'new2.png', 'shot', CBEEBIES_IPLAYER);
+        //await this.captureScreenshot('john.png', 'shot', 'new2.png', 'shot', CBEEBIES_IPLAYER);
         await this.click(CBEEBIES_IPLAYER, 2);
         await this.captureScreenshot('john.png', 'shot', 'new3.png', 'shot', Cbbebies_logo);
 

@@ -10,3 +10,8 @@ browser=firefox mocha -t 0
 
 document.documentElement.clientHeight
 document.querySelector('a.button:nth-child(1)').getBoundingClientRect().y
+
+
+npm install resemblejs
+brew install pkg-config cairo libpng jpeg giflib
+npm install canvas
