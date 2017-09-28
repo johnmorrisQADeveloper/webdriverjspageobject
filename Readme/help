@@ -17,3 +17,7 @@ brew install pkg-config cairo libpng jpeg giflib
 npm install canvas
 
 browser=chrome mocha -t 0
+
+mocha --no-timeouts
+
+npm install operadriver --save-dev

@@ -20,8 +20,12 @@ describe('BBC iplayer', function () {
         await homePage.goto_peter_rabbit();
     });
 
+    it('open the first video', async function () {
+        await homePage.gotofirstvideo();
+    })
+
     after(async function () {
-        await homePage.quit();
+        //await homePage.quit();
     });
 });
 

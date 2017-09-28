@@ -14,6 +14,8 @@
     "canvas": "^1.6.7",
     "chai": "^4.1.2",
     "mocha": "^3.5.3",
+    "operadriver": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.15",
     "resemblejs": "^2.2.6",
     "selenium-webdriver": "^3.5.0"
   }
