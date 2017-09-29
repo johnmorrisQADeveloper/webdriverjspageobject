@@ -51,6 +51,11 @@ else if (browser == "safari") {
 //
 // }
 
+/**
+ * function to remove a file
+ *
+ * @param fileName : specify the file name to be removed
+ */
 const removeImage = (fileName) => {
     fs.unlink(fileName, (err) => {
         if (err) {
@@ -69,8 +74,19 @@ class BasePage {
         driver.manage().timeouts().implicitlyWait(5000);
     }
 
+    /**
+     * function to input to a textbox
+     *
+     * @param WebDriverLocator : specify the webelement locator i.e. by css, id, linktxt, xpath
+     * @param keys : specifies the values to send into the input box
+     * @param retries : specify the number of attempts to do the below action before timeout
+     * @returns {Promise} : returns a promise
+     */
     async sendKeys(WebDriverLocator, keys, retries) {
         try {
+            if (retries == null) {
+                retries = 1;
+            }
             const element = await driver.findElement(WebDriverLocator)
             await element.click()
             await element.clear()
@@ -85,8 +101,18 @@ class BasePage {
         }
     }
 
+    /**
+     * function to click an element
+     *
+     * @param WebDriverLocator : specify the webelement locator i.e. by css, id, linktxt, xpath
+     * @param retries : specify the number of attempts to do the below action before timeout
+     * @returns {Promise} : returns a promise
+     */
     async click(WebDriverLocator, retries) {
         try {
+            if (retries == null) {
+                retries = 1;
+            }
             const element = await driver.findElement(WebDriverLocator)
             await element.click()
             return
@@ -99,8 +125,18 @@ class BasePage {
         }
     }
 
+    /**
+     * function to wait for an element to be visible and later click the element if visible
+     *
+     * @param WebDriverLocator : specify the webelement locator i.e. by css, id, linktxt, xpath
+     * @param retries : specify the number of attempts to do the below action before timeout
+     * @returns {Promise} : returns a promise
+     */
     async waitForVisibleAndClick(WebDriverLocator, retries) {
         try {
+            if (retries == null) {
+                retries = 1;
+            }
             const element = await driver.findElement(WebDriverLocator)
             await driver.wait(until.elementIsVisible(element), 1200)
             if (element.isDisplayed()) {
@@ -115,8 +151,18 @@ class BasePage {
         }
     }
 
+    /**
+     * function to wait for an element to be visible
+     *
+     * @param WebDriverLocator : specify the webelement locator i.e. by css, id, linktxt, xpath
+     * @param retries : specify the number of attempts to do the below action before timeout
+     * @returns {Promise} : returns a promise
+     */
     async waitForVisible(WebDriverLocator, retries) {
         try {
+            if (retries == null) {
+                retries = 1;
+            }
             const element = await driver.findElement(WebDriverLocator)
             await driver.wait(until.elementIsVisible(element), 500)
         } catch (err) {
@@ -128,6 +174,54 @@ class BasePage {
         }
     }
 
+    /**
+     * function to switch to a frame
+     *
+     * @param frameName : specify the frame to switch to
+     * @param retries : specify the number of attempts to do the below action before timeout
+     * @returns {Promise} : returns a promise
+     */
+    async switchToFrame(frameName, retries) {
+        try {
+            if (retries == null) {
+                retries = 1;
+            }
+
+        } catch (err) {
+
+        }
+    }
+
+    /**
+     * function to compare two images
+     *
+     * @param elementScreenShotFileName : cropped image name taken from the website to be compare against the baseline
+     * @param elementScreenShotFileLocation : cropped image location taken from the website to be compare against the baseline
+     * @param baselineElementScreenShotFileName : baseline image name
+     * @param baselineElementScreenShotFileLocation: baseline image location
+     * @returns {Promise.<void>} : returns a resolved promise.
+     */
+    async compareImages(elementScreenShotFileName, elementScreenShotFileLocation, baselineElementScreenShotFileName, baselineElementScreenShotFileLocation) {
+        // compares a two images and spots the difference into a third file
+        console.log("Comparing images " + elementScreenShotFileName + " - " + baselineElementScreenShotFileName);
+        console.log("Location "+ elementScreenShotFileLocation + " -" + baselineElementScreenShotFileLocation);
+        var resemble = require('resemblejs');
+        var diff = resemble(elementScreenShotFileLocation + '/' + elementScreenShotFileName).compareTo(baselineElementScreenShotFileName + '/' + baselineElementScreenShotFileLocation).scaleToSameSize().onComplete(function (data) {
+            //console.log(data);
+            if (data.rawMisMatchPercentage > 0) {
+                console.log("There is some difference in the images.. please have a look");
+                fs.writeFileSync('./shot/diff.png', data.getBuffer());
+            } else {
+                console.log("The images are the same .. nothing is changed ");
+            }
+        });
+    }
+
+    /**
+     * function to quit the browser
+     *
+     * @returns {Promise.<void>}
+     */
     async quit() {
         if (browser == "firefox") {
             await driver.quit();
@@ -137,6 +231,12 @@ class BasePage {
         }
     }
 
+    /**
+     * take an element screenshot .. currently only works on firefox.
+     *
+     * @param webElement :
+        * @returns {Promise.<void>}
+     */
     async takeScreenshotElement(webElement) {
         await driver.findElement(webElement).takeScreenshot().then(async function (image) {
             fs.writeFile('shot/png.jpg', image, 'base64').then(async function (data) {
@@ -145,11 +245,20 @@ class BasePage {
         });
     }
 
-    // later at somepoint , de couple the methods i.e. get location, delete file, screenshot , and check if the files are different
+    /**
+     * function to take a screenshot of an element
+     *
+     * @param screenShotFileName : initial screenhot filename
+     * @param screenShotFileLocation : initial screenshot location
+     * @param elementScreenShotFileName : name of the cropped element screenshot
+     * @param elementScreenShotFileLocation location of the cropped element screenshot
+     * @param webElement : web element locator
+     * @returns {Promise.<void>} : returns a resolved promise
+     */
     async captureScreenshot(screenShotFileName, screenShotFileLocation, elementScreenShotFileName, elementScreenShotFileLocation, webElement) {
         try {
 
-            console.log("Element screenshot " + webElement);
+            console.log("Attempting to take element screenshot " + webElement);
             var x, y, h, w;
 
             // works ..if you want to run as javascript dom ...
@@ -170,9 +279,9 @@ class BasePage {
                 driver.findElement(webElement).takeScreenshot().then(function (image) {
                     require('fs').writeFile(elementScreenShotFileLocation + '/' + elementScreenShotFileName, image, 'base64', function (err) {
                         if (err) {
-                            console.log("Failed to take screenshot " + err.message);
+                            console.log("Failed to take element screenshot " + webElement + " -- " + err.message);
                         } else {
-                            console.log("Took a screenshot")
+                            console.log("Took element screenshot " + webElement);
                         }
                     })
                 })
@@ -205,9 +314,9 @@ class BasePage {
                     function (image, err) {
                         require('fs').writeFile(screenShotFileLocation + '/' + screenShotFileName, image, 'base64', function (err) {
                             if (err) {
-                                console.log("Failed to take screenshot " + err.message);
+                                console.log("Failed to take entire page screenshot " + err.message);
                             } else {
-                                console.log("Took a screenshot ")
+                                console.log("Took entire page screenshot ");
                             }
                         });
                     }
@@ -227,20 +336,45 @@ class BasePage {
 
 
             }
-            // compares a two images and spots the difference into a third file
-            // var resemble = require('resemblejs');
-            // var diff = resemble(elementScreenShotFileLocation + '/' + elementScreenShotFileName).compareTo('shot/baseline.png').scaleToSameSize().onComplete(function (data) {
-            //     console.log(data);
-            //     if (data.rawMisMatchPercentage > 0) {
-            //         fs.writeFileSync('./shot/diff.png', data.getBuffer());
-            //     }
-            // });
+            
+            //compares a two images and spots the difference into a third file
+            var resemble = require('resemblejs');
+            var diff = resemble(elementScreenShotFileLocation + '/' + elementScreenShotFileName).compareTo('shot/baseline/baseline.png').scaleToSameSize().onComplete(function (data) {
+                if (data.rawMisMatchPercentage > 0) {
+                    console.log("Something is different, please have a look");
+                    fs.writeFileSync('./shot/diff.png', data.getBuffer());
+                }
+            });
 
         } catch (err) {
             throw  new Error('Unable to screenshot ' + err.message);
         }
     }
 
+
+    /**
+     * function to get text from a web element
+     *
+     * @param WebDriverLocator : specify the locator for the webelement
+     * @param retries : no of attempts
+     * @returns {Promise.<*>} :
+     */
+    async getText(WebDriverLocator, retries) {
+        try {
+            if (retries == null) {
+                retries = 1;
+            }
+            const element = await this.driver.findElement(WebDriverLocator)
+            const text = await element.getText()
+            return text
+        } catch (err) {
+            if (retries === 0) {
+                throw new Error(`Unable to get ${locator.toString()} text after maximum retries, error : ${err.message}`)
+            }
+            await this.driver.sleep(250)
+            return this.getText(locator, retries - 1)
+        }
+    }
 }
 
 module.exports = BasePage;

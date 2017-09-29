@@ -29,6 +29,8 @@ class HomePage extends BasePage {
         await this.captureScreenshot('CBEEBIES_IPLAYER.png', 'shot', '2_CBEEBIES_IPLAYER.png', 'shot', CBEEBIES_IPLAYER);
         await this.click(CBEEBIES_IPLAYER, 2);
         await this.captureScreenshot('cbbebies.png', 'shot', '3_cbbebies.png', 'shot', Cbbebies_logo);
+        // not sure if this will work .. .. not working ... check later
+        //await this.compareImages('3_cbbebies.png', 'shot', 'baseline.png', 'shot/baseline');
     }
 
     async goto_peter_rabbit() {
@@ -37,11 +39,17 @@ class HomePage extends BasePage {
         await this.click(PETER_RABBIT, 2);
     }
 
-    async gotofirstvideo(){
+    async gotofirstvideo() {
         await this.waitForVisible(video_1);
         await this.captureScreenshot('video_1.png', 'shot', '5_video_1.png', 'shot', video_1);
         await this.click(video_1);
         await this.click(play_button);
+
+        // flash selenium would be a challenge ...
+        // i.e. need to stop, play , volume up .. down .. the media file .. image recognition maybe
+        // find an image on the screen ...  and get it's location .. and click on the coordinates via webdriver ..
+        // sub image of an image .. ( we need to store it in baseline  or within page objects image folder.. ) ..
+        // not sure
     }
 }
 

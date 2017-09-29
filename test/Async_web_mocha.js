@@ -25,8 +25,7 @@ describe('BBC iplayer', function () {
     })
 
     after(async function () {
-        //await homePage.quit();
+        await homePage.quit();
     });
 });
 
-// mocha -t 0 --harmony_async_await Async_web_mocha.js

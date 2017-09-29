@@ -21,3 +21,6 @@ browser=chrome mocha -t 0
 mocha --no-timeouts
 
 npm install operadriver --save-dev
+
+Run
+mocha -t 0 --harmony_async_await Async_web_mocha.js
