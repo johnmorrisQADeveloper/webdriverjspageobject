@@ -64,6 +64,7 @@ const removeImage = (fileName) => {
             console.log("file deleted ");
         }
     });
+
 };
 
 class BasePage {
@@ -205,8 +206,10 @@ class BasePage {
         // compares a two images and spots the difference into a third file
         console.log("Comparing images " + elementScreenShotFileName + " - " + baselineElementScreenShotFileName);
         console.log("Location "+ elementScreenShotFileLocation + " -" + baselineElementScreenShotFileLocation);
+        var filepath = baselineElementScreenShotFileLocation + '/' + baselineElementScreenShotFileName;
         var resemble = require('resemblejs');
-        var diff = resemble(elementScreenShotFileLocation + '/' + elementScreenShotFileName).compareTo(baselineElementScreenShotFileName + '/' + baselineElementScreenShotFileLocation).scaleToSameSize().onComplete(function (data) {
+        console.log("path "+filepath);
+        var diff = resemble(elementScreenShotFileLocation + '/' + elementScreenShotFileName).compareTo(/*'shot/baseline/baseline.png'*/filepath).scaleToSameSize().onComplete(function (data) {
             //console.log(data);
             if (data.rawMisMatchPercentage > 0) {
                 console.log("There is some difference in the images.. please have a look");
@@ -215,7 +218,19 @@ class BasePage {
                 console.log("The images are the same .. nothing is changed ");
             }
         });
+
+
+        // var resemble = require('resemblejs');
+        // var diff = resemble(elementScreenShotFileLocation + '/' + elementScreenShotFileName).compareTo('shot/baseline/baseline.png').scaleToSameSize().onComplete(function (data) {
+        //     if (data.rawMisMatchPercentage > 0) {
+        //         console.log("Something is different, please have a look");
+        //         fs.writeFileSync('./shot/diff.png', data.getBuffer());
+        //     }
+        // });
     }
+
+
+
 
     /**
      * function to quit the browser
@@ -257,7 +272,6 @@ class BasePage {
      */
     async captureScreenshot(screenShotFileName, screenShotFileLocation, elementScreenShotFileName, elementScreenShotFileLocation, webElement) {
         try {
-
             console.log("Attempting to take element screenshot " + webElement);
             var x, y, h, w;
 
@@ -336,15 +350,15 @@ class BasePage {
 
 
             }
-            
+
             //compares a two images and spots the difference into a third file
-            var resemble = require('resemblejs');
-            var diff = resemble(elementScreenShotFileLocation + '/' + elementScreenShotFileName).compareTo('shot/baseline/baseline.png').scaleToSameSize().onComplete(function (data) {
-                if (data.rawMisMatchPercentage > 0) {
-                    console.log("Something is different, please have a look");
-                    fs.writeFileSync('./shot/diff.png', data.getBuffer());
-                }
-            });
+            // var resemble = require('resemblejs');
+            // var diff = resemble(elementScreenShotFileLocation + '/' + elementScreenShotFileName).compareTo('shot/baseline/baseline.png').scaleToSameSize().onComplete(function (data) {
+            //     if (data.rawMisMatchPercentage > 0) {
+            //         console.log("Something is different, please have a look");
+            //         fs.writeFileSync('./shot/diff.png', data.getBuffer());
+            //     }
+            // });
 
         } catch (err) {
             throw  new Error('Unable to screenshot ' + err.message);

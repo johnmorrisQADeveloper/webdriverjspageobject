@@ -30,7 +30,7 @@ class HomePage extends BasePage {
         await this.click(CBEEBIES_IPLAYER, 2);
         await this.captureScreenshot('cbbebies.png', 'shot', '3_cbbebies.png', 'shot', Cbbebies_logo);
         // not sure if this will work .. .. not working ... check later
-        //await this.compareImages('3_cbbebies.png', 'shot', 'baseline.png', 'shot/baseline');
+        await this.compareImages('3_cbbebies.png', 'shot', 'baseline.png', 'shot/baseline');
     }
 
     async goto_peter_rabbit() {
